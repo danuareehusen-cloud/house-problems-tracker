@@ -37,6 +37,42 @@
             gap: 20px;
         }
 
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.export { background: linear-gradient(135deg, #10b981, #059669); }
+        .action-btn.import { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .action-btn.reset { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .hidden-input {
+            display: none;
+        }
+
         .logo {
             display: flex;
             align-items: center;
@@ -483,6 +519,7 @@
                 <div class="logo-icon">🏠</div>
                 <div class="logo-text">Home Tracker</div>
             </div>
+            
             <div class="stats-bar">
                 <div class="stat-item">
                     <span class="stat-number" id="totalProblems">9</span> ปัญหาทั้งหมด
@@ -493,6 +530,19 @@
                 <div class="stat-item">
                     <span class="stat-number" id="remainingProblems">9</span> ค้างอยู่
                 </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="action-btn export" onclick="exportData()" title="ส่งออกข้อมูล">
+                    📤 Export
+                </button>
+                <button class="action-btn import" onclick="document.getElementById('importFile').click()" title="นำเข้าข้อมูล">
+                    📥 Import
+                </button>
+                <button class="action-btn reset" onclick="resetAllData()" title="รีเซ็ตข้อมูลทั้งหมด">
+                    🔄 Reset
+                </button>
+                <input type="file" id="importFile" class="hidden-input" accept=".json" onchange="importData(event)">
             </div>
         </div>
     </div>
@@ -820,22 +870,190 @@
             }
         }
 
-        // Add reset function for testing/demo
-        function resetAllData() {
-            if (confirm('ต้องการรีเซ็ตข้อมูลทั้งหมดหรือไม่?')) {
-                localStorage.removeItem('problemStates');
-                localStorage.removeItem('problemImages');
-                location.reload();
+        // Add export/import functions
+        function exportData() {
+            const exportData = {
+                version: "1.0",
+                timestamp: new Date().toISOString(),
+                problemStates: problemStates,
+                problemImages: problemImages,
+                totalProblems: problems.length,
+                completedCount: Object.values(problemStates).filter(state => state).length
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-');
+            
+            link.download = `house-problems-backup-${dateStr}-${timeStr}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            showNotification('📤 ส่งออกข้อมูลสำเร็จ!', 'success');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validate data structure
+                    if (!importedData.problemStates || !importedData.problemImages) {
+                        throw new Error('Invalid data format');
+                    }
+                    
+                    // Confirm import
+                    if (confirm('ต้องการนำเข้าข้อมูลนี้หรือไม่? ข้อมูลปัจจุบันจะถูกแทนที่')) {
+                        problemStates = importedData.problemStates;
+                        problemImages = importedData.problemImages;
+                        
+                        // Ensure all problems exist
+                        problems.forEach(problem => {
+                            if (problemStates[problem.id] === undefined) {
+                                problemStates[problem.id] = false;
+                            }
+                            if (!problemImages[problem.id]) {
+                                problemImages[problem.id] = [];
+                            }
+                        });
+                        
+                        saveData();
+                        renderProblems();
+                        showNotification('📥 นำเข้าข้อมูลสำเร็จ!', 'success');
+                    }
+                    
+                } catch (error) {
+                    showNotification('❌ ไฟล์ข้อมูลไม่ถูกต้อง', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset input
+            event.target.value = '';
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 9999;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            `;
+            
+            // Set background based on type
+            switch(type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function shareData() {
+            if (navigator.share) {
+                exportData().then(() => {
+                    // Mobile share would work here if file sharing was supported
+                    showNotification('📱 ใช้ปุ่ม Export เพื่อแชร์ไฟล์', 'info');
+                });
+            } else {
+                showNotification('🔗 คัดลอกลิงก์: ' + window.location.href, 'info');
+                navigator.clipboard?.writeText(window.location.href);
             }
         }
 
-        // Add keyboard shortcut for reset (Ctrl+Shift+R)
+        // Add reset function for testing/demo
+        function resetAllData() {
+            if (confirm('ต้องการรีเซ็ตข้อมูลทั้งหมดหรือไม่? การกระทำนี้ไม่สามารถยกเลิกได้')) {
+                localStorage.removeItem('problemStates');
+                localStorage.removeItem('problemImages');
+                showNotification('🔄 รีเซ็ตข้อมูลสำเร็จ!', 'info');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+        }
+
+        // Add keyboard shortcuts
         document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+R: Reset
             if (e.ctrlKey && e.shiftKey && e.key === 'R') {
                 e.preventDefault();
                 resetAllData();
             }
+            // Ctrl+Shift+E: Export
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                exportData();
+            }
+            // Ctrl+Shift+I: Import
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                document.getElementById('importFile').click();
+            }
         });
+
+        // Auto-save notification
+        let saveTimeout;
+        function showAutoSaveNotification() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                showNotification('💾 บันทึกอัตโนมัติแล้ว', 'success');
+            }, 500);
+        }
+
+        // Override save function to show notification
+        const originalSaveData = saveData;
+        saveData = function() {
+            originalSaveData();
+            showAutoSaveNotification();
+        };
 
         // Initial render
         renderProblems();
