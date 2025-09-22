@@ -847,19 +847,154 @@
                 problemImages[problemId] = [];
             }
 
-            files.forEach(file => {
+            let processedCount = 0;
+            const totalFiles = files.length;
+
+            files.forEach((file, index) => {
                 if (file.type.startsWith('image/')) {
+                    // Check file size (max 2MB per image)
+                    if (file.size > 2 * 1024 * 1024) {
+                        showNotification(`⚠️ ไฟล์ ${file.name} ใหญ่เกิน 2MB`, 'error');
+                        processedCount++;
+                        if (processedCount === totalFiles) {
+                            checkStorageAndSave(problemId);
+                        }
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        problemImages[problemId].push(e.target.result);
-                        saveData(); // Save to localStorage
-                        renderProblems();
+                        try {
+                            const imageData = e.target.result;
+                            
+                            // Compress image if needed
+                            compressImage(imageData, (compressedImage) => {
+                                problemImages[problemId].push(compressedImage);
+                                processedCount++;
+                                
+                                if (processedCount === totalFiles) {
+                                    checkStorageAndSave(problemId);
+                                }
+                            });
+                            
+                        } catch (error) {
+                            console.error('Error processing image:', error);
+                            showNotification(`❌ ข้อผิดพลาดในการประมวลผล ${file.name}`, 'error');
+                            processedCount++;
+                            
+                            if (processedCount === totalFiles) {
+                                checkStorageAndSave(problemId);
+                            }
+                        }
                     };
+                    
+                    reader.onerror = function() {
+                        showNotification(`❌ ไม่สามารถอ่านไฟล์ ${file.name}`, 'error');
+                        processedCount++;
+                        
+                        if (processedCount === totalFiles) {
+                            checkStorageAndSave(problemId);
+                        }
+                    };
+                    
                     reader.readAsDataURL(file);
                 } else {
-                    alert('เฉพาะไฟล์รูปภาพเท่านั้น: ' + file.name);
+                    showNotification(`⚠️ ${file.name} ไม่ใช่ไฟล์รูปภาพ`, 'error');
+                    processedCount++;
+                    
+                    if (processedCount === totalFiles) {
+                        checkStorageAndSave(problemId);
+                    }
                 }
             });
+        }
+
+        function compressImage(imageData, callback) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                // Calculate new dimensions (max 800px width/height)
+                let { width, height } = img;
+                const maxSize = 800;
+                
+                if (width > maxSize || height > maxSize) {
+                    if (width > height) {
+                        height = (height * maxSize) / width;
+                        width = maxSize;
+                    } else {
+                        width = (width * maxSize) / height;
+                        height = maxSize;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to JPEG with 0.7 quality for better compression
+                const compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                callback(compressedData);
+            };
+            
+            img.onerror = function() {
+                // If compression fails, use original
+                callback(imageData);
+            };
+            
+            img.src = imageData;
+        }
+
+        function checkStorageAndSave(problemId) {
+            try {
+                // Test if we can save to localStorage
+                const testData = JSON.stringify(problemImages);
+                localStorage.setItem('test_storage', testData);
+                localStorage.removeItem('test_storage');
+                
+                // If successful, save normally
+                saveData();
+                renderProblems();
+                showNotification('✅ บันทึกรูปภาพสำเร็จ', 'success');
+                
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    // Storage is full
+                    showNotification('💾 หน่วยความจำเต็ม! ลองลดจำนวนรูปหรือลบรูปเก่า', 'error');
+                    
+                    // Remove the last added images for this problem
+                    if (problemImages[problemId] && problemImages[problemId].length > 0) {
+                        problemImages[problemId].pop();
+                        showNotification('🔄 ลบรูปล่าสุดออกแล้ว เนื่องจากพื้นที่เต็ม', 'info');
+                    }
+                } else {
+                    showNotification('❌ เกิดข้อผิดพลาดในการบันทึก', 'error');
+                    console.error('Storage error:', error);
+                }
+                
+                renderProblems();
+            }
+        }
+
+        function getStorageInfo() {
+            try {
+                const used = new Blob([JSON.stringify(problemImages)]).size;
+                const usedMB = (used / 1024 / 1024).toFixed(2);
+                const maxMB = 5; // LocalStorage limit is usually around 5-10MB
+                
+                console.log(`Storage used: ${usedMB}MB / ~${maxMB}MB`);
+                
+                if (used > maxMB * 1024 * 1024 * 0.8) {
+                    showNotification(`⚠️ ใช้พื้นที่ ${usedMB}MB จาก ~${maxMB}MB แล้ว`, 'info');
+                }
+                
+                return { used, usedMB, maxMB };
+            } catch (error) {
+                return { used: 0, usedMB: '0.00', maxMB: 5 };
+            }
         }
 
         function removeImage(problemId, imageIndex) {
