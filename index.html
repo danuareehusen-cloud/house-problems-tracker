@@ -12,102 +12,229 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: #2d3748;
         }
 
-        .container {
-            max-width: 1200px;
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 30px;
         }
 
-        .stat-card {
-            background: linear-gradient(45deg, #3498db, #2980b9);
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text {
             color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
-            transform: translateY(0);
-            transition: transform 0.3s ease;
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .categories {
+            display: grid;
+            gap: 30px;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .category-info h3 {
+            font-size: 22px;
+            font-weight: 700;
             margin-bottom: 5px;
         }
 
-        .stat-label {
-            font-size: 1.1em;
+        .category-count {
+            font-size: 14px;
             opacity: 0.9;
         }
 
         .problems-grid {
+            padding: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
 
         .problem-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid #e74c3c;
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .problem-card.completed {
-            border-left-color: #27ae60;
-            background: linear-gradient(45deg, rgba(39, 174, 96, 0.05), rgba(46, 204, 113, 0.05));
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .problem-card:hover::before {
+            transform: scaleY(1);
         }
 
         .problem-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .problem-card.completed {
+            background: linear-gradient(135deg, rgba(76, 217, 100, 0.02), rgba(52, 211, 153, 0.02));
+            border-color: #10b981;
+        }
+
+        .problem-card.completed::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+            transform: scaleY(1);
         }
 
         .problem-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .problem-title {
             flex: 1;
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
             line-height: 1.4;
             margin-right: 15px;
         }
@@ -123,186 +250,264 @@
         }
 
         .checkbox-custom {
-            width: 30px;
-            height: 30px;
-            border: 3px solid #bdc3c7;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #d1d5db;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: white;
         }
 
         .checkbox input:checked + .checkbox-custom {
-            background: #27ae60;
-            border-color: #27ae60;
-            transform: scale(1.1);
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+            transform: scale(1.05);
         }
 
         .checkbox-custom::after {
             content: '✓';
             color: white;
-            font-weight: bold;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 16px;
             opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s ease;
+            transform: scale(0) rotate(45deg);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .checkbox input:checked + .checkbox-custom::after {
             opacity: 1;
-            transform: scale(1);
-        }
-
-        .problem-icon {
-            width: 80px;
-            height: 80px;
-            margin: 15px auto;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5em;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: scale(1) rotate(0deg);
         }
 
         .problem-location {
-            background: linear-gradient(45deg, #ff7b7b, #667eea);
-            color: white;
-            padding: 8px 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            color: #4b5563;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(255, 123, 123, 0.3);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
 
-        .problem-solution {
-            margin-top: 15px;
-            padding: 15px;
-            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
-            border-radius: 10px;
-            border-left: 4px solid #3498db;
+        .problem-location::before {
+            content: '📍';
+            font-size: 14px;
         }
 
-        .solution-title {
-            font-weight: bold;
-            color: #2980b9;
-            margin-bottom: 8px;
+        .image-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .image-upload-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(37, 99, 235, 0.03));
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .upload-title {
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
+            gap: 8px;
         }
 
-        .solution-title::before {
-            content: '💡';
-            margin-right: 8px;
-            font-size: 1.2em;
-        }
-
-        .solution-text {
-            color: #34495e;
-            line-height: 1.6;
-        }
-
-        .priority-high {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
-            font-weight: bold;
             transition: all 0.3s ease;
-            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-            color: white;
-            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+            transform: scale(1.02);
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-text {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .image-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: scale(1.05);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .image-remove:hover {
+            background: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-hint {
+            font-size: 14px;
+            opacity: 0.8;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats-bar {
+                justify-content: center;
+            }
+            
+            .filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding: 0 20px;
             }
             
             .problems-grid {
                 grid-template-columns: 1fr;
+                padding: 20px;
             }
             
-            h1 {
-                font-size: 2em;
+            .container {
+                padding: 0 10px 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 24px;
             }
             
-            .filter-buttons {
-                flex-direction: column;
-                align-items: center;
+            .stat-item {
+                padding: 8px 16px;
+                font-size: 14px;
             }
             
-            .filter-btn {
-                width: 200px;
+            .problem-card {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏠 ระบบติดตามปัญหาบ้าน</h1>
-        
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="totalProblems">9</div>
-                <div class="stat-label">ปัญหาทั้งหมด</div>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🏠</div>
+                <div class="logo-text">Home Tracker</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="completedProblems">0</div>
-                <div class="stat-label">แก้ไขแล้ว</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="remainingProblems">9</div>
-                <div class="stat-label">ยังไม่แก้ไข</div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalProblems">9</span> ปัญหาทั้งหมด
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="completedProblems">0</span> แก้ไขแล้ว
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="remainingProblems">9</span> ค้างอยู่
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="filter-buttons">
+    <div class="container">
+        <div class="filters">
             <button class="filter-btn active" onclick="filterProblems('all')">ทั้งหมด</button>
             <button class="filter-btn" onclick="filterProblems('pending')">ยังไม่แก้ไข</button>
             <button class="filter-btn" onclick="filterProblems('completed')">แก้ไขแล้ว</button>
+            <button class="filter-btn" onclick="filterProblems('moisture')">ความชื้น</button>
+            <button class="filter-btn" onclick="filterProblems('bathroom')">ห้องน้ำ</button>
+            <button class="filter-btn" onclick="filterProblems('exterior')">ภายนอก</button>
         </div>
 
-        <div class="problems-grid" id="problemsGrid">
+        <div class="categories" id="categoriesContainer">
         </div>
     </div>
 
@@ -312,91 +517,103 @@
                 id: 1,
                 title: "คราบลอยน้ำชื้น ระเบียงชั้น2",
                 location: "ระเบียงชั้น 2",
-                icon: "💧",
-                priority: "high",
-                solution: "ตรวจสอบการระบายน้ำ ทาสีกันซึม และปรับปรุงระบบระบายอากาศ"
+                category: "moisture",
+                categoryName: "ปัญหาความชื้น"
             },
             {
                 id: 2,
                 title: "ความชื้นภายในบ้าน จากรอยร้าว ชั้น2",
                 location: "ภายในบ้าน ชั้น 2",
-                icon: "🏠",
-                priority: "high",
-                solution: "อุดรอยร้าวด้วยซีลแลนท์ ทาสีกันซึม และติดตั้งพัดลมระบายอากาศ"
+                category: "moisture",
+                categoryName: "ปัญหาความชื้น"
             },
             {
                 id: 3,
                 title: "ความชื้นภายนอกอาคาร ข้างบ้าน+หลังบ้าน",
                 location: "ภายนอกอาคาร",
-                icon: "🌧️",
-                priority: "medium",
-                solution: "ปรับปรุงการระบายน้ำ ตัดแต่งพืชที่บดบัง และทาสีภายนอกกันความชื้น"
+                category: "exterior",
+                categoryName: "ปัญหาภายนอก"
             },
             {
                 id: 4,
                 title: "หลอดไฟขาดหน้าบ้าน",
                 location: "หน้าบ้าน",
-                icon: "💡",
-                priority: "medium",
-                solution: "เปลี่ยนหลอดไฟ LED ใหม่ และตรวจสอบสายไฟให้ปลอดภัย"
+                category: "exterior",
+                categoryName: "ปัญหาภายนอก"
             },
             {
                 id: 5,
                 title: "กระเบื้องร้าวหน้าบ้าน",
                 location: "หน้าบ้าน",
-                icon: "🏗️",
-                priority: "medium",
-                solution: "เปลี่ยนกระเบื้องชิ้นใหม่ที่เข้าโทนสี และอุดยาแนวให้เรียบร้อย"
+                category: "exterior",
+                categoryName: "ปัญหาภายนอก"
             },
             {
                 id: 6,
                 title: "กลิ่นแก๊ซจากห้องน้ำ ชั้น3",
                 location: "ห้องน้ำ ชั้น 3",
-                icon: "🚿",
-                priority: "high",
-                solution: "ตรวจสอบท่อระบายน้ำ เปลี่ยน P-trap และปรับปรุงระบบระบายอากาศ"
+                category: "bathroom",
+                categoryName: "ปัญหาห้องน้ำ"
             },
             {
                 id: 7,
                 title: "น้ำขัง อ่างล่างมือ ห้องน้ำชั้น 3",
                 location: "ห้องน้ำ ชั้น 3",
-                icon: "🚰",
-                priority: "medium",
-                solution: "ล้างท่อระบายน้ำด้วยสารเคมี หรือใช้ลูกสูบดูดส้วม และตรวจสอบท่อ"
+                category: "bathroom",
+                categoryName: "ปัญหาห้องน้ำ"
             },
             {
                 id: 8,
                 title: "กลิ่นน้ำเหม็นจากก๊อกฝักบัว ห้องน้ำชั้น 2",
                 location: "ห้องน้ำ ชั้น 2",
-                icon: "🚿",
-                priority: "medium",
-                solution: "ทำความสะอาดก๊อกและฝักบัวด้วยน้ำส้มสายชู หรือสารทำความสะอาด"
+                category: "bathroom",
+                categoryName: "ปัญหาห้องน้ำ"
             },
             {
                 id: 9,
                 title: "ก๊อกน้ำอ่างล่างมือสนิมขึ้น ห้องน้ำชั้น 2",
                 location: "ห้องน้ำ ชั้น 2",
-                icon: "🔧",
-                priority: "low",
-                solution: "ใช้น้ำมะนาวและเกลือขัดคราบสนิม หรือเปลี่ยนก๊อกใหม่หากจำเป็น"
+                category: "bathroom",
+                categoryName: "ปัญหาห้องน้ำ"
             }
         ];
 
+        const categories = {
+            moisture: { name: "ปัญหาความชื้น", icon: "💧", color: "#3b82f6" },
+            bathroom: { name: "ปัญหาห้องน้ำ", icon: "🚿", color: "#06b6d4" },
+            exterior: { name: "ปัญหาภายนอก", icon: "🏗️", color: "#8b5cf6" }
+        };
+
         let currentFilter = 'all';
         let problemStates = {};
+        let problemImages = {};
 
-        // Initialize problem states
+        // Initialize problem states and images
         problems.forEach(problem => {
             problemStates[problem.id] = false;
+            problemImages[problem.id] = [];
         });
 
         function createProblemCard(problem) {
             const isCompleted = problemStates[problem.id];
-            const priorityBadge = problem.priority === 'high' ? '<div class="priority-high">🔥 ด่วน</div>' : '';
+            const images = problemImages[problem.id] || [];
+            const imageCount = images.length;
+            
+            const imagePreview = images.length > 0 ? `
+                <div class="image-preview">
+                    ${images.map((img, index) => `
+                        <div class="image-item">
+                            <img src="${img}" alt="รูปปัญหา ${index + 1}">
+                            <button class="image-remove" onclick="removeImage(${problem.id}, ${index})" title="ลบรูป">×</button>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+            
+            const imageCounter = imageCount > 0 ? `<div class="image-counter">📷 ${imageCount} รูป</div>` : '';
             
             return `
-                <div class="problem-card ${isCompleted ? 'completed' : ''}" data-status="${isCompleted ? 'completed' : 'pending'}">
-                    ${priorityBadge}
+                <div class="problem-card ${isCompleted ? 'completed' : ''}" data-status="${isCompleted ? 'completed' : 'pending'}" data-category="${problem.category}">
                     <div class="problem-header">
                         <div class="problem-title">${problem.title}</div>
                         <label class="checkbox">
@@ -404,27 +621,85 @@
                             <div class="checkbox-custom"></div>
                         </label>
                     </div>
-                    <div class="problem-icon">${problem.icon}</div>
                     <div class="problem-location">${problem.location}</div>
-                    <div class="problem-solution">
-                        <div class="solution-title">วิธีแก้ไข:</div>
-                        <div class="solution-text">${problem.solution}</div>
+                    ${imageCounter}
+                    <div class="image-upload-section">
+                        <div class="upload-title">📸 แนบรูปภาพ</div>
+                        <div class="upload-area" onclick="document.getElementById('file-${problem.id}').click()" 
+                             ondragover="handleDragOver(event)" 
+                             ondrop="handleDrop(event, ${problem.id})"
+                             ondragenter="handleDragEnter(event)"
+                             ondragleave="handleDragLeave(event)">
+                            <input type="file" id="file-${problem.id}" class="upload-input" 
+                                   accept="image/*" multiple onchange="handleFileSelect(event, ${problem.id})">
+                            <div class="upload-text">คลิกหรือลากรูปมาวางที่นี่</div>
+                            <div class="upload-hint">รองรับ JPG, PNG, GIF (หลายไฟล์ได้)</div>
+                        </div>
+                        ${imagePreview}
                     </div>
                 </div>
             `;
         }
 
+        function groupProblemsByCategory(problemsList) {
+            const grouped = {};
+            problemsList.forEach(problem => {
+                if (!grouped[problem.category]) {
+                    grouped[problem.category] = [];
+                }
+                grouped[problem.category].push(problem);
+            });
+            return grouped;
+        }
+
         function renderProblems() {
-            const grid = document.getElementById('problemsGrid');
+            const container = document.getElementById('categoriesContainer');
             let filteredProblems = problems;
 
+            // Apply status filter
             if (currentFilter === 'completed') {
                 filteredProblems = problems.filter(p => problemStates[p.id]);
             } else if (currentFilter === 'pending') {
                 filteredProblems = problems.filter(p => !problemStates[p.id]);
+            } else if (currentFilter !== 'all') {
+                filteredProblems = problems.filter(p => p.category === currentFilter);
             }
 
-            grid.innerHTML = filteredProblems.map(createProblemCard).join('');
+            if (filteredProblems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏠</div>
+                        <div class="empty-state-text">ไม่มีปัญหาในหมวดนี้</div>
+                        <div class="empty-state-hint">ลองเปลี่ยนตัวกรองดู</div>
+                    </div>
+                `;
+                updateStats();
+                return;
+            }
+
+            const grouped = groupProblemsByCategory(filteredProblems);
+            
+            container.innerHTML = Object.keys(grouped).map(categoryKey => {
+                const categoryProblems = grouped[categoryKey];
+                const category = categories[categoryKey];
+                const completedCount = categoryProblems.filter(p => problemStates[p.id]).length;
+                
+                return `
+                    <div class="category">
+                        <div class="category-header" style="background: linear-gradient(135deg, ${category.color}, ${category.color}dd)">
+                            <div class="category-icon">${category.icon}</div>
+                            <div class="category-info">
+                                <h3>${category.name}</h3>
+                                <div class="category-count">${completedCount}/${categoryProblems.length} แก้ไขแล้ว</div>
+                            </div>
+                        </div>
+                        <div class="problems-grid">
+                            ${categoryProblems.map(createProblemCard).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
             updateStats();
         }
 
@@ -453,6 +728,66 @@
             event.target.classList.add('active');
             
             renderProblems();
+        }
+
+        // Image handling functions
+        function handleFileSelect(event, problemId) {
+            const files = Array.from(event.target.files);
+            processFiles(files, problemId);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleDragEnter(event) {
+            event.preventDefault();
+            event.target.closest('.upload-area').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.target.closest('.upload-area').classList.remove('dragover');
+        }
+
+        function handleDrop(event, problemId) {
+            event.preventDefault();
+            event.target.closest('.upload-area').classList.remove('dragover');
+            
+            const files = Array.from(event.dataTransfer.files);
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+            
+            if (imageFiles.length !== files.length) {
+                alert('เฉพาะไฟล์รูปภาพเท่านั้น (JPG, PNG, GIF)');
+            }
+            
+            processFiles(imageFiles, problemId);
+        }
+
+        function processFiles(files, problemId) {
+            if (!problemImages[problemId]) {
+                problemImages[problemId] = [];
+            }
+
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        problemImages[problemId].push(e.target.result);
+                        renderProblems();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('เฉพาะไฟล์รูปภาพเท่านั้น: ' + file.name);
+                }
+            });
+        }
+
+        function removeImage(problemId, imageIndex) {
+            if (confirm('ต้องการลบรูปภาพนี้หรือไม่?')) {
+                problemImages[problemId].splice(imageIndex, 1);
+                renderProblems();
+            }
         }
 
         // Initial render
